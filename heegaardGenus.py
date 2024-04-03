@@ -32,13 +32,103 @@ gadTubeT1T3=[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,1,0,0
 gadTubeT0Q0312=[1,1,1,0,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,1]
 gadTubeT3Q0312=[0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,1]
 
+"""Normal coordinates for the normal surfaces of G that correspond to octagon pieces
+gadOctagonO0213, gadOctagonO0312: octagons partitioning vertices 02/13, 03/12
+"""
+gadOctagonO0213=[1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,0,0,1,0,1,0,0,0,1,0,0,1,1,0,0]
+gadOctagonO0312=[1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0]
+
+
+
+def removeOctsGadget(surf, tetNum):
+	"""Given a normal surface surf with an octagon in tetNum, inserts the gadget into surf's triangulation, and expresses the octagon in terms of normal surfaces, in T+G.
+	This surface MUST be encoded in NS_AN_STANDARD.
+	In general, this can be used for converting a surface into coordinates in T+G where there is no octagon in the given tetrahedron.
+	
+	PARAMETERS
+	NormalSurface surf: the normal surface in the base triangulation
+	int tetNum: the index in surf.triangulation() of the tetrahedron where the gadget is inserted. i.e., where the octagon is.
+	
+	RETURNS
+	NormalSurface surfOctNormalised: the normal surface that is isomorphic to surf, but embedded in T+G
+	"""
+	T = surf.triangulation()
+
+	#Saving the coordinates of surf
+	surfVecOrig = list(surf.vector())
+	
+	#Save the coordinates in tetrahedra before, in and after tetNum (note that here, using NS_AN_STANDARD, there are 10 coords per tet).
+	#Discard the last three coordinates in each tet aside from tetNum AaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaa
+	(surfVecOrig1, surfVecOrig2, surfVecOrig3) = (surfVecOrig[0:tetNum*10], surfVecOrig[tetNum*10:tetNum*10+10], surfVecOrig[tetNum*10+10:])
+	#The 'chunk' of the normal coordinates of surf that are unchanged
+	surfVecStart = surfVecOrig1 + surfVecOrig3
+	#Saving number of triangles and quadrilaterals and octagons in tetNum of the original surface
+	(sT0, sT1, sT2, sT3, sQ0123, sQ0213, sQ0312, sO0123, sO0213, sO0312) = tuple(surfVecOrig2)
+	
+	#If we have an octagon, check its type, and then glue in the gadget accordingly.
+	#o0213 and o0312 exist naturally in the gadget. Also, quads and octagons cannot co-exist, so if there are a nonzero number of octagons, we don't bother including sums of quadrilateral pieces.
+	
+	if sO0213!=0:
+		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
+		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sO213*gadOctagonO0213[i] for i in range(35)]
+		surfVecNew = surfVecStart + surfGadgetPart
+		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
+	elif sO0312!=0:
+		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
+		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sO312*gadOctagonO0312[i] for i in range(35)]
+		surfVecNew = surfVecStart + surfGadgetPart
+		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
+	elif sO0123!=0:
+		newTri = gadgetPermGluer(tri, tetNum, Perm4([2,0,1,3]))
+		surfGadgetPart = [sT*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + sO0123*gadOctagonO0213[i] for i in range(35)]
+		surfVecNew = surfVecStart + surfGadgetPart
+		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
+	#No octagons at all, just return the same surface:
+	else:
+		surfOctNormalised = surf
+	return surfOctNormalised
+
+
+def surfaceConverter(surf, PERM, tetNum)
+	"""Given a normal surface surf in a triangulation T, a tetrahedron and a permutation for a gadget gluing, return the equivalent surface that exists in the triangulation T+G, as defined by the permutation and tetrahedron.
+	This surface MUST NOT BE ALMOST NORMAL.
+	(If this has octagons in tetNum, use removeOctsGadget. If there are octagons in other tets, it does not make sense to convert the surface in tetNum, as this function is intended for use with adding surf to a tubed surface.)
+	
+	PARAMETERS
+	NormalSurface surf: the normal surface in the base triangulation
+	Permutation<4> PERM: the permutation of the gadget gluing.
+	int tetNum: the index in surf.triangulation() of the tetrahedron where the gadget is inserted.
+	
+	RETURNS
+	NormalSurface surfInTplusG: the normal surface that is isomorphic to surf, but embedded in T+G
+	"""
+	T = surf.triangulation()
+	
+	#Saving the coordinates of surf
+	surfVecOrig = list(surf.vector())
+	
+	#The triangulation resulting from gluing the gadget in
+	TplusG = gadgetPermGluer(T, tetNum, PERM)
+	
+	#Save the coordinates in tetrahedra before, in and after tetNum
+	(surfVecOrig1, surfVecOrig2, surfVecOrig3) = (surfVecOrig[0:tetNum*7], surfVecOrig[tetNum*7:tetNum*7+7], surfVecOrig[tetNum*7+7:])
+	#The 'chunk' of the normal coordinates of surf that are unchanged
+	surfVecStart = surfVecOrig1 + surfVecOrig3
+	#Saving number of triangles and quadrilaterals in tetNum of the original surface
+	(sT0, sT1, sT2, sT3, sQ0123, sQ0213, sQ0312) = tuple(surfVecOrig2)
+		#AaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaa need to convert properly bc of the perm
+	surfPortionInG = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sQ0123*gadQ0123[i] + sQ0213*gadQ0213[i] + sQ0312*gadQ0312[i] for i in range(35)]
+	surfVecNew = surfVecStart + surfPortionInG
+	surfNew = NormalSurface(TplusG, NS_STANDARD, surfVecNew)
+	return surfNew
+
+
 
 #Assumed that s.eulerChar()<=0 already checked if needed.
 #This will make all combinations in the given tet
 #(...just because I don't know how to nicely specify the type in an input)
 #
 # PRE: surf mustbe normql
-
 
 def surfaceGadgetCombiner(triRaw, tetNum, surf):
 	"""Given a normal surface surf in the triangulation triRaw, we return all possible surfaces with tubes placed in tetrahedron tetNum.
