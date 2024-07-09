@@ -1,9 +1,5 @@
 import time
 
-#Even permutations of (0123)
-global PERMS
-PERMS = [[0,1,3,2],[0,2,1,3],[0,3,2,1],[1,0,2,3],[1,2,3,0],[1,3,0,2],[2,0,3,1],[2,1,0,3],[2,3,1,0],[3,0,1,2],[3,1,2,0],[3,2,0,1]]
-
 #The isomorphism signature that produces the gadget (G)
 global GADGET_ISOSIG
 GADGET_ISOSIG = 'fHLMabddeaaaa'
@@ -13,32 +9,30 @@ gadT0, gadT1, gadT2, gadT3: triangles around vertices 0, 1, 2, 3
 gadQ0123, gadQ0213, gadQ0312: quadrilaterals partitioning vertices 01/23, 02/13, 03/12
 """
 global gadT0, gadT1, gadT2, gadT3, gadQ0123, gadQ0213, gadQ0312
-gadT0=[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0]
-gadT1=[0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0]
-gadT2=[0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0]
-gadT3=[0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0]
-gadQ0123=[0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]
-gadQ0213=[0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0]
-gadQ0312=[0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1]
+gadT0=[1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0]
+gadT1=[0,1,0,0,0,0,0, 0,1,0,0,0,0,0, 0,1,0,0,0,0,0, 0,1,0,0,0,0,0, 0,1,0,0,0,0,0]
+gadT2=[0,0,1,0,0,0,0, 0,0,1,0,0,0,0, 0,0,1,0,0,0,0, 0,0,1,0,0,0,0, 0,0,1,0,0,0,0]
+gadT3=[0,0,0,1,0,0,0, 0,0,0,1,0,0,0, 0,0,0,1,0,0,0, 0,0,0,1,0,0,0, 0,0,0,1,0,0,0]
+gadQ0123=[0,0,0,0,1,0,0, 0,0,0,0,1,0,0, 0,0,0,0,1,0,0, 0,0,0,0,1,0,0, 0,0,0,0,1,0,0]
+gadQ0213=[0,0,0,0,0,1,0, 1,0,1,0,0,0,0, 0,0,0,0,0,1,0, 1,0,1,0,0,0,0, 0,0,0,0,0,1,0]
+gadQ0312=[0,1,1,0,0,0,0, 0,1,1,0,0,0,0, 0,1,1,0,0,0,0, 0,1,1,0,0,0,0, 0,0,0,0,0,0,1]
 
 """Normal coordinates for the normal surfaces of G that correspond to annuli pieces
 gadTubeT0T2, gadTubeT0T3, gadTubeT1T2, gadTubeT1T3: annuli between triangles 0/2, 0/3, 1/2, 1/3
 gadTubeT0Q0312, gadTubeT3Q0312: annuli between quadrilateral q0312, and triangles 0, 3.
 """
-gadTubeT0T2=[1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0]
-gadTubeT0T3=[1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1]
-gadTubeT1T2=[0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,0,0]
-gadTubeT1T3=[0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0,0,1,0,1,0,0,0]
-gadTubeT0Q0312=[1,1,1,0,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,0,0,0,1,0,0,0,1,0,1,0,0,0,0,0,1]
-gadTubeT3Q0312=[0,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,1,1,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,1]
+gadTubeT0T2=[1,0,1,0,0,0,0, 0,0,0,0,0,1,0, 1,0,1,0,0,0,0, 0,0,0,0,0,1,0, 1,0,1,0,0,0,0]
+gadTubeT0T3=[1,0,0,1,0,0,0, 1,0,0,1,0,0,0, 0,0,0,0,0,0,1, 1,0,0,1,0,0,0, 0,0,0,0,0,0,1]
+gadTubeT1T2=[0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,1,1,0,0,0,0]
+gadTubeT1T3=[0,0,0,0,0,1,0, 0,0,0,0,0,1,0, 0,1,0,1,0,0,0, 0,1,0,1,0,0,0, 0,1,0,1,0,0,0]
+gadTubeT0Q0312=[1,1,1,0,0,0,0, 0,1,0,0,0,1,0, 1,1,1,0,0,0,0, 0,1,0,0,0,1,0, 1,0,0,0,0,0,1]
+gadTubeT3Q0312=[0,0,1,0,0,1,0, 0,0,1,0,0,1,0, 0,1,1,1,0,0,0, 0,1,1,1,0,0,0, 0,0,0,1,0,0,1]
 
 """Normal coordinates for the normal surfaces of G that correspond to octagon pieces
 gadOctagonO0213, gadOctagonO0312: octagons partitioning vertices 02/13, 03/12
 """
-gadOctagonO0213=[1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,0,0,0,1,0,1,0,0,0,1,0,0,1,1,0,0]
-gadOctagonO0312=[1,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,1,1,0,0,0,0]
-
-
+gadOctagonO0213=[1,0,1,0,0,0,0, 0,0,0,0,0,1,0, 1,0,0,1,1,0,0, 0,1,0,1,0,0,0, 1,0,0,1,1,0,0]
+gadOctagonO0312=[1,0,0,1,0,0,0, 1,0,0,1,0,0,0, 0,0,0,0,0,0,1, 1,0,0,1,0,0,0, 0,1,1,0,0,0,0]
 
 def removeOctsGadget(surf, tetNum):
 	"""Given a normal surface surf with an octagon in tetNum, inserts the gadget into surf's triangulation, and expresses the octagon in terms of normal surfaces, in T+G.
@@ -57,41 +51,42 @@ def removeOctsGadget(surf, tetNum):
 	#Saving the coordinates of surf
 	surfVecOrig = list(surf.vector())
 	
-	#Save the coordinates in tetrahedra before, in and after tetNum (note that here, using NS_AN_STANDARD, there are 10 coords per tet).
-	#Discard the last three coordinates in each tet aside from tetNum AaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaa
-	(surfVecOrig1, surfVecOrig2, surfVecOrig3) = (surfVecOrig[0:tetNum*10], surfVecOrig[tetNum*10:tetNum*10+10], surfVecOrig[tetNum*10+10:])
-	#The 'chunk' of the normal coordinates of surf that are unchanged
-	surfVecStart = surfVecOrig1 + surfVecOrig3
+	#Save the coordinates in the tetrahedron from tetNum (note that here, using NS_AN_STANDARD, there are 10 coords per tet)
+	surfVecTetNum = surfVecOrig[tetNum*10:tetNum*10+10]
+	#Save the remainder of the coordinates
+	surfVecRemainder = surfVecOrig[0:tetNum*10].extend(surfVecOrig[tetNum*10+10:])
+	#Remove the last three coordinates in each block of 10 (these are the octagon coordinates) so that we can encode our surface with 7*T coordinates in NS_STANDARD.
+	#surfVecStart is the 'chunk' of the normal coordinates of the surf that will be unchanged
+	surfVecStart = []
+	for i in range(len(surfVecRemainder)):
+		if i%10 in [7,8,9]:
+			surfVecStart.append(vec[surfVecRemainder])
+
 	#Saving number of triangles and quadrilaterals and octagons in tetNum of the original surface
-	(sT0, sT1, sT2, sT3, sQ0123, sQ0213, sQ0312, sO0123, sO0213, sO0312) = tuple(surfVecOrig2)
+	(sT0, sT1, sT2, sT3, sQ0123, sQ0213, sQ0312, sO0123, sO0213, sO0312) = tuple(surfVecTetNum)
 	
 	#If we have an octagon, check its type, and then glue in the gadget accordingly.
 	#o0213 and o0312 exist naturally in the gadget. Also, quads and octagons cannot co-exist, so if there are a nonzero number of octagons, we don't bother including sums of quadrilateral pieces.
-	
 	if sO0213!=0:
 		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
 		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sO213*gadOctagonO0213[i] for i in range(35)]
-		surfVecNew = surfVecStart + surfGadgetPart
-		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 	elif sO0312!=0:
 		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
 		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sO312*gadOctagonO0312[i] for i in range(35)]
-		surfVecNew = surfVecStart + surfGadgetPart
-		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 	elif sO0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([2,0,1,3]))
 		surfGadgetPart = [sT*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + sO0123*gadOctagonO0213[i] for i in range(35)]
-		surfVecNew = surfVecStart + surfGadgetPart
-		surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
-	#No octagons at all, just return the same surface:
+	#No octagons at all, just use an identity permutation. This could be included in the O0213 case, but this makes no difference. In this case, note we could have quadrilaterals. The quads aren't split into cases because there can only be one type of them in a tetrahedron.
 	else:
-		surfOctNormalised = surf
+		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
+		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sQ0123*gadQ0123[i] + sQ0213*gadQ0213[i] + sQ0312*gadQ0312[i] for i in range(35)]
+	surfVecNew = surfVecStart + surfGadgetPart
+	surfOctNormalised = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 	return surfOctNormalised
 
-
-def surfaceConverter(surf, PERM, tetNum)
+def surfaceConverter(surf, PERM, tetNum):
 	"""Given a normal surface surf in a triangulation T, a tetrahedron and a permutation for a gadget gluing, return the equivalent surface that exists in the triangulation T+G, as defined by the permutation and tetrahedron.
-	This surface MUST NOT BE ALMOST NORMAL.
+	This surface MUST be encoded in NS_STANDARD.
 	(If this has octagons in tetNum, use removeOctsGadget. If there are octagons in other tets, it does not make sense to convert the surface in tetNum, as this function is intended for use with adding surf to a tubed surface.)
 	
 	PARAMETERS
@@ -110,28 +105,32 @@ def surfaceConverter(surf, PERM, tetNum)
 	#The triangulation resulting from gluing the gadget in
 	TplusG = gadgetPermGluer(T, tetNum, PERM)
 	
-	#Save the coordinates in tetrahedra before, in and after tetNum
+	#Save the coordinates in tetrahedra before, in and after tetNum. The surface is already encoded in NS_STANDARD so we don't need to remove 0s in the coordinates.
 	(surfVecOrig1, surfVecOrig2, surfVecOrig3) = (surfVecOrig[0:tetNum*7], surfVecOrig[tetNum*7:tetNum*7+7], surfVecOrig[tetNum*7+7:])
 	#The 'chunk' of the normal coordinates of surf that are unchanged
 	surfVecStart = surfVecOrig1 + surfVecOrig3
 	#Saving number of triangles and quadrilaterals in tetNum of the original surface
 	(sT0, sT1, sT2, sT3, sQ0123, sQ0213, sQ0312) = tuple(surfVecOrig2)
-		#AaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaaAaaaaaaaaaaaaaaaaaaa need to convert properly bc of the perm
+	if PERM == Perm4([0,1,2,3]):
+		surfPortionInG = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sQ0123*gadQ0123[i] + sQ0213*gadQ0213[i] + sQ0312*gadQ0312[i] for i in range(35)]
+	elif PERM == Perm4([0,3,1,2]):
+		surfPortionInG = [sT0*gadT0[i] + sT1*gadT3[i] + sT2*gadT1[i] + sT3*gadT2[i] + sQ0123*gadQ0312[i] + sQ0213*gadQ0123[i] + sQ0312*gadQ0213[i] for i in range(35)]
+	elif PERM == Perm4([1,0,3,2]):
+		surfPortionInG = [sT0*gadT1[i] + sT1*gadT0[i] + sT2*gadT3[i] + sT3*gadT2[i] + sQ0123*gadQ0123[i] + sQ0213*gadQ0213[i] + sQ0312*gadQ0312[i] for i in range(35)]
+	elif PERM == Perm4([1,2,0,3]):
+		surfPortionInG = [sT0*gadT1[i] + sT1*gadT2[i] + sT2*gadT0[i] + sT3*gadT3[i] + sQ0123*gadQ0312[i] + sQ0213*gadQ0123[i] + sQ0312*gadQ0213[i] for i in range(35)]
+	elif PERM == Perm4([2,0,1,3]):
+		surfPortionInG = [sT0*gadT2[i] + sT1*gadT0[i] + sT2*gadT1[i] + sT3*gadT3[i] + sQ0123*gadQ0213[i] + sQ0213*gadQ0312[i] + sQ0312*gadQ0123[i] for i in range(35)]
+	elif PERM == Perm4([3,1,0,2]):
+		surfPortionInG = [sT0*gadT3[i] + sT1*gadT1[i] + sT2*gadT0[i] + sT3*gadT2[i] + sQ0123*gadQ0213[i] + sQ0213*gadQ0312[i] + sQ0312*gadQ0123[i] for i in range(35)]
 	surfPortionInG = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sQ0123*gadQ0123[i] + sQ0213*gadQ0213[i] + sQ0312*gadQ0312[i] for i in range(35)]
 	surfVecNew = surfVecStart + surfPortionInG
 	surfNew = NormalSurface(TplusG, NS_STANDARD, surfVecNew)
 	return surfNew
 
-
-
-#Assumed that s.eulerChar()<=0 already checked if needed.
-#This will make all combinations in the given tet
-#(...just because I don't know how to nicely specify the type in an input)
-#
-# PRE: surf mustbe normql
-
 def surfaceGadgetCombiner(triRaw, tetNum, surf):
-	"""Given a normal surface surf in the triangulation triRaw, we return all possible surfaces with tubes placed in tetrahedron tetNum.
+	"""Given a normal surface surf in the triangulation triRaw, we return all possible surfaces with tubes placed in tetrahedron tetNum. This assumes that s.eulerChar()<0 is already checked.
+	The surface must be encoded in NS_STANDARD.
 	
 	PARAMETERS
 	Triangulation3 triRaw: the full triangulation
@@ -178,14 +177,14 @@ def surfaceGadgetCombiner(triRaw, tetNum, surf):
 	#tri0 tri3 tube
 	if sT0!=0 and sT3!=0 and sQ0123==0 and sQ0213==0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,1,2,3]))
-		surfGadgetPart = [(sT0-1)*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + (sT3-1)*gadT3[i] + sQ0312*gadQ0312b[i] + gadTubeT0T3[i] for i in range(35)]
+		surfGadgetPart = [(sT0-1)*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + (sT3-1)*gadT3[i] + sQ0312*gadQ0312[i] + gadTubeT0T3[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri1 tri2 tube
 	if sT1!=0 and sT2!=0 and sQ0123==0 and sQ0213==0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,1,2,3]))
-		surfGadgetPart = [sT0*gadT0[i] + (sT1-1)*gadT1[i] + (sT2-1)*gadT2[i] + sT3*gadT3[i] + sQ0312*gadQ0312b[i] + gadTubeT1T2[i] for i in range(35)]
+		surfGadgetPart = [sT0*gadT0[i] + (sT1-1)*gadT1[i] + (sT2-1)*gadT2[i] + sT3*gadT3[i] + sQ0312*gadQ0312[i] + gadTubeT1T2[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
@@ -206,94 +205,91 @@ def surfaceGadgetCombiner(triRaw, tetNum, surf):
 	#tri0 quad0123 tube
 	if sT0!=0 and sQ0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,3,1,2]))
-		surfGadgetPart = [(sT0-1)*gadT0[i] + sT2*gadT1[i] + sT3*gadT2[i] + sT1*gadT3[i] + (sQ0123-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT0-1)*gadT0[i] + sT2*gadT1[i] + sT3*gadT2[i] + sT1*gadT3[i] + (sQ0123-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri0 quad0213 tube
 	if sT0!=0 and sQ0213!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([3,1,0,2]))
-		surfGadgetPart = [sT2*gadT0[i] + sT1*gadT1[i] + sT3*gadT2[i] + (sT0-1)*gadT3[i] + (sQ0213-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT2*gadT0[i] + sT1*gadT1[i] + sT3*gadT2[i] + (sT0-1)*gadT3[i] + (sQ0213-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri0 quad0312 tube
 	if sT0!=0 and sQ0312!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,1,2,3]))
-		surfGadgetPart = [(sT0-1)*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + (sQ0312-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT0-1)*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + (sQ0312-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri1 quad0123 tube
 	if sT1!=0 and sQ0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,3,1,2]))
-		surfGadgetPart = [sT0*gadT0[i] + sT2*gadT1[i] + sT3*gadT2[i] + (sT1-1)*gadT3[i] + (sQ0123-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT0*gadT0[i] + sT2*gadT1[i] + sT3*gadT2[i] + (sT1-1)*gadT3[i] + (sQ0123-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri1 quad0213 tube
 	if sT1!=0 and sQ0213!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([2,0,1,3]))
-		surfGadgetPart = [(sT1-1)*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + (sQ0213-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT1-1)*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + (sQ0213-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri1 quad0312 tube
 	if sT1!=0 and sQ0312!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([1,0,3,2]))
-		surfGadgetPart = [(sT1-1)*gadT0[i] + sT0*gadT1[i] + sT3*gadT2[i] + sT2*gadT3[i] + (sQ0312-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT1-1)*gadT0[i] + sT0*gadT1[i] + sT3*gadT2[i] + sT2*gadT3[i] + (sQ0312-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri2 quad0123 tube
 	if sT2!=0 and sQ0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([1,2,0,3]))
-		surfGadgetPart = [(sT2-1)*gadT0[i] + sT0*gadT1[i] + sT1*gadT2[i] + sT3*gadT3[i] + (sQ0123-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT2-1)*gadT0[i] + sT0*gadT1[i] + sT1*gadT2[i] + sT3*gadT3[i] + (sQ0123-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri2 quad0213 tube
 	if sT2!=0 and sQ0213!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([3,1,0,2]))
-		surfGadgetPart = [(sT2-1)*gadT0[i] + sT1*gadT1[i] + sT3*gadT2[i] + sT0*gadT3[i] + (sQ0213-1)*gadQ0312b[i] + gadTubeT0Q0312[i] for i in range(35)]
+		surfGadgetPart = [(sT2-1)*gadT0[i] + sT1*gadT1[i] + sT3*gadT2[i] + sT0*gadT3[i] + (sQ0213-1)*gadQ0312[i] + gadTubeT0Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri2 quad0312 tube
 	if sT2!=0 and sQ0312!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([1,0,3,2]))
-		surfGadgetPart = [sT1*gadT0[i] + sT0*gadT1[i] + sT3*gadT2[i] + (sT2-1)*gadT3[i] + (sQ0312-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT1*gadT0[i] + sT0*gadT1[i] + sT3*gadT2[i] + (sT2-1)*gadT3[i] + (sQ0312-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri3 quad0123 tube
 	if sT3!=0 and sQ0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([1,2,0,3]))
-		surfGadgetPart = [sT2*gadT0[i] + sT0*gadT1[i] + sT1*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0123-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT2*gadT0[i] + sT0*gadT1[i] + sT1*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0123-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri3 quad0213 tube
 	if sT3!=0 and sQ0213!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([2,0,1,3]))
-		surfGadgetPart = [sT1*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0213-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT1*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0213-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	#tri3 quad0312 tube
 	if sT3!=0 and sQ0312!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([0,1,2,3]))
-		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0312-1)*gadQ0312b[i] + gadTubeT3Q0312[i] for i in range(35)]
+		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + (sT3-1)*gadT3[i] + (sQ0312-1)*gadQ0312[i] + gadTubeT3Q0312[i] for i in range(35)]
 		surfVecNew = surfVecStart + surfGadgetPart
 		surfNew = NormalSurface(newTri, NS_STANDARD, surfVecNew)
 		allTubings.append(surfNew)
 	return allTubings
 
-
 #perm MUST be 0123, 0312, 1032, 1203, 2013 or 3102
 #this will be a privately used function anyway.
-
-
 def gadgetPermGluer(triRaw, tetNum, PERM):
 	"""Given a triangulation triRaw and a permutation PERM, this returns the triangulation where tetrahedron tetNum is removed and replaced with the gadget, glued according to PERM.
 	
@@ -316,7 +312,8 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 	tri.insertTriangulation(gad)
 	tet = tri.tetrahedron(tetNum)
 
-	#This grabs the info for the faces that will be glued to the gadget. tABC refers to what is adjacent to face ABC of tetrahedron tetNum.
+	#This grabs the info for the faces that will be glued to the gadget.
+	#tABC refers to what is adjacent to face ABC of tetrahedron tetNum.
 	#Perms here are P:tet->tABC. Take P.inverse() to get the perm tABC->tet
 	(t012simp, t012face, t012perm) = (tet.adjacentSimplex(3), tet.adjacentFacet(3), tet.adjacentGluing(3))
 	(t013simp, t013face, t013perm) = (tet.adjacentSimplex(2), tet.adjacentFacet(2), tet.adjacentGluing(2))
@@ -328,7 +325,7 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 	tFaces = [t012face, t013face, t023face, t123face]
 	tPerms = [t012perm, t013perm, t023perm, t123perm]
 
-	#This grabs the gadget from triangulation+gadget (should be the only thing with boundary)
+	#This grabs the gadget from tri+gad (should be the only thing with boundary)
 	gadBC = tri.boundaryComponent(0)
 	(g012simp, g012face) = (gadBC.triangle(3).front().tetrahedron(), gadBC.triangle(3).front())
 	(g013simp, g013face) = (gadBC.triangle(2).front().tetrahedron(), gadBC.triangle(2).front())
@@ -336,7 +333,7 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 	(g123simp, g123face) = (gadBC.triangle(1).front().tetrahedron(), gadBC.triangle(1).front())
 
 	#selfGluer[PERM][(tri1, tri2)]=[gadSimp1, gadFace1, gadSimp2] describes how, in cases where tet.triangle(tri1)==tet.triangle(tri2), the gadget should be glued. We are gluing from gadSimp1 to gadSimp2, along triangle gadFace1 of gadSimp1.
-	#Here, (tri1, tri2) always has tri1>tri2 - code using this loops over triangle numbers accordingly.
+	#Here, (tri1, tri2) always has tri1>tri2 - the code using this loops over triangle numbers accordingly.
 	selfGluer = {
 			Perm4([0,1,2,3]): {(3,2): (g012simp, 3, g013simp),
 							   (3,1): (g012simp, 3, g023simp),
@@ -373,7 +370,7 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 							   (3,0): (g013simp, 2, g012simp),
 							   (2,1): (g123simp, 0, g023simp),
 							   (2,0): (g123simp, 0, g012simp),
-							   (1,0): (g023simp, 1, g012simp)},
+							   (1,0): (g023simp, 1, g012simp)}
 			}
 	
 	#Check for self-gluings
@@ -387,12 +384,8 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 				selfJoin = (i1, i2)
 	
 	#Unglue and reglue each face of tet, depending on the chosen PERM.
-	#At each stage, if selfJoin is non-empty, then the gadget is glued to itself accordingly.
-	#	If triAtoBperm:triA->triB and PERM:triA->gadA, PERM:triB->gadB, then the permutation mapping gadA to gadB
-	#	is PERM^{-1}(triAtoBperm(PERM)), which is PERM * triAtoBperm * PERM^{-1}
-	#If selfJoin is empty, the face adjacent to tet (the one we are removing) is glued to the gadget.
-	#	If tABCperm:tet->tABC and PERM:tet->gad, then the permutation mapping tABC to gad is tABCperm^{-1}(PERM),
-	#	which is PERM * tABCperm^{-1}
+	#At each stage, if selfJoin is non-empty, then the gadget is glued to itself accordingly. If triAtoBperm:triA->triB and PERM:triA->gadA and PERM:triB->gadB, then the permutation mapping gadA to gadB is PERM^{-1}(triAtoBperm(PERM)), which is PERM * triAtoBperm * PERM^{-1}
+	#If selfJoin is empty, the face adjacent to tet (the one we are removing) is glued to the gadget. If tABCperm:tet->tABC and PERM:tet->gad, then the permutation mapping tABC to gad is tABCperm^{-1}(PERM), which is PERM * tABCperm^{-1}
 	if PERM == Perm4([0,1,2,3]):
 		gSimps = [g012simp, g013simp, g023simp, g123simp]
 	elif PERM == Perm4([0,3,1,2]):
@@ -430,8 +423,6 @@ def gadgetPermGluer(triRaw, tetNum, PERM):
 	tri.removeTetrahedron(tet)
 	return tri
 
-
-
 def filteredSurfaceGenerator(tri, eulerChars, vertex, almNorm):
 	"""This generates the subset of (almost) normal surfaces for a triangulation with prescribed Euler characteristic(s).
 	
@@ -460,7 +451,8 @@ def filteredSurfaceGenerator(tri, eulerChars, vertex, almNorm):
 	filter = SurfaceFilterProperties()
 	filter.setEulerChars(eulerChars)
 	filteredSurfaces = NormalSurfaces(rawSurfaces, filter)
-	#NTD: separate this into a surface generator and a filter, then save surfaces to each triangulation.
+	#NTD: separate this into a surface generator and a filter, then save
+	#	surfaces to each triangulation. Aaaaaaaaaaaaaa
 	return filteredSurfaces
 
 def checkSurfaces(tri, eulerChar, vertex, almNorm):
@@ -501,9 +493,7 @@ def checkSurfaces(tri, eulerChar, vertex, almNorm):
 	return success
 
 #This cuts along the given normal surface (first checking if it has the right euler characteristic and is orientable and connected) and checks if it is a splitting.
-#SHOULD MERGE WITH CHECKSURFACES()
-#normSurf: normal surface
-#eulerChar: integer, desired euler characteristic
+#aaaaaaaa NTD SHOULD MERGE WITH CHECKSURFACES()
 def checkOneSurface(normSurf, eulerChar):
 	"""This function cuts a triangulation along a given (almost) normal surface (first checking if it has the required Euler characteristic, and is orientable and connected), and checks if it is a splitting (both sides are handlebodies).
 	
@@ -529,8 +519,6 @@ def checkOneSurface(normSurf, eulerChar):
 					success = True
 	return success
 
-
-
 def surfaceGraphGenerator(tri, minEuler, maxEuler, vertex, almNorm):
 	"""Generates a graph where surfaces are connected if they are locally compatible. Includes surfaces with Euler characterstic minEuler up to maxEuler. Adds double/triple/etc surfaces of those with nonzero Euler characteristic and sets their neighbours to be the neighbours of their original surface only (e.g. so 2*s and 3*s are not listed as compatible so that 5*s will not appear when testing 2*s+3*s).
 	
@@ -543,14 +531,14 @@ def surfaceGraphGenerator(tri, minEuler, maxEuler, vertex, almNorm):
 	
 	RETURNS
 	List<NormalSurface> trueSurfaceList: list of surfaces that appear in the graph
-	dict<int, List<int>> graph: if graph[i]=[a,b], then surface trueSurfaceList[i] is locally compatible with trueSurfaceList[a], trueSurfaceList[b].
+	dict<int, List<int>> graph: if graph[i]=[a,b], then surface trueSurfaceList[i] is locally compatible with trueSurfaceList[a], and also trueSurfaceList[b].
 	"""
 	#Generate all surfaces with Euler characteristics in the prescribed range
 	surfacesPossible = filteredSurfaceGenerator(tri, list(range(minEuler,maxEuler+1)), vertex, almNorm)
 	trueSurfaceList = []
 	graph = {}
 	
-	#For each surface, find all surfaces that are locally compatible with it, and save into graph.
+	#For each surface, find all surfaces that are locally compatible with it, and insert into the graph.
 	for i1 in range(surfacesPossible.size()):
 		surf1 = surfacesPossible.surface(i1)
 		trueSurfaceList.append(surf1)
@@ -573,18 +561,13 @@ def surfaceGraphGenerator(tri, minEuler, maxEuler, vertex, almNorm):
 				maxMult = minEuler//ecS1
 			elif ecS1>0:
 				maxMult = maxEuler//ecS1
-			#Multiples of the surface from 2 up to (number of times ecs1 can go into ec)
+			#Multiples of the surface from 2 up to (no. times ecs1 can go into ec)
 			for i3 in range(2, 1 + maxMult):
 				#Neighbours of i3*surf will be the same as neighbours of i3
 				graph[len(graph)] = graph[i1]
 				trueSurfaceList.append(surf1*i3)
 	return trueSurfaceList, graph
 
-#Finds all cliques (groups of locally compatible surfaces) whose weights (euler characteristics) sum to EC, checking if they're splittings in the process. Returns True if successful at some point.
-#graph: dictionary with keys of integers and values of sets of integers, representing surfaces
-#surfaceID: list of surfaces, where surfaceID[i] corresponds to the surface with integer ID i from graph
-#EC: integer, weight of cliques (euler characteristic).
-#gadgetFlag: boolean, True if we are to use the gadget (and hence should make a clique with eulerChar n+2), or False if not.
 def findWeightedCliques(graph, surfaceID, EC, gadgetFlag):
 	"""Finds all cliques (groups of locally compatible surfaces) whose weights (euler characteristics) sum to EC, checking if they're splittings in the process. Breaks and returns True if successful at some point.
 	
@@ -595,7 +578,7 @@ def findWeightedCliques(graph, surfaceID, EC, gadgetFlag):
 	Boolean gadgetFlag: if True, tubings from the gadget will decrease the Euler characteristic by 2, so we search for cliques with characteristic EC+2 instead. If False, business as usual.
 
 	RETURNS
-	Boolean success: if True, a splitting has been found from some clique. False otherwise.
+	Boolean success: if True, a splitting has been found from some clique.
 	"""
 
 	#Set of cliques found so far
@@ -619,12 +602,6 @@ def findWeightedCliques(graph, surfaceID, EC, gadgetFlag):
 		"""
 		return sum((surfaceID[node]).eulerChar() for node in clique)
 	
-	#Modified Bron-Kerbosch algorithm that considers weights of cliques and is not restricted to maximal cliques.
-	#R: set of integers, representing surfaces considered in the clique so far.
-	#P: set of integers, representing candidate surfaces which could be included in the clique.
-	#X: set of integers, representing surfaces which cannot be included in the clique.
-	#weightSum: weightSum of R so far.
-	#success: True if a valid clique splitting has been found, stopping clique search
 	def bronKerboschWeightSum(R, P, X, weightSum):
 		"""A version of the Bron-Kerbosch algorithm for finding maximal cliques - modified to target weights of cliques instead of restricting to maximal cliques.
 	
@@ -635,8 +612,10 @@ def findWeightedCliques(graph, surfaceID, EC, gadgetFlag):
 		int weightSum: calculate sum of the weights in the particular clique so far.
 
 		RETURNS
-		Boolean success: True if a valid clique Heegaard splitting has been found. Cancels the recursive clique search/generation.
+		Boolean success: True if a valid clique Heegaard splitting has been
+			found. Cancels the recursive clique search/generation.
 		"""
+		
 		#e.g. we are searching with n=-4. If our weightSum is NOT in the range[-6,2], specifically below, then the only way for it to enter this range is by adding a surface to the current clique with Euler characteristic greater than 2 (so, a disconnected surface). If our weightSum is above this range, then it means that at some point, we added at least one surface with Euler characteristic greater than 2 (disconnected), or multiple with Euler characteristic 1 or 2 (not allowed, by Rubinstein's algorithm).
 		#Alternatively, it's a dummy-check if the user has set up an invalid value of EC initially.
 		#If we don't quit here, we may get stuck with a constantly increasing or decreasing Euler characteristic.
@@ -699,14 +678,6 @@ def findWeightedCliques(graph, surfaceID, EC, gadgetFlag):
 	#I believe if we get to this point it means we found no success and so it will return the default false value of it.
 	return success
 
-#Open census:
-file = regina.open('fixed2d.rga')
-hyperbolicOrientalMen = file.findPacketLabel('Orientable')
-
-
-
-#Does the standard routine but for arbitrary genus.
-#Returns list with [genus int, type string]
 def genusNTest(tri, wantedG):
 	"""Tests if tri has a Heegaard splitting of the specified genus. This tests vertex almost normal surfaces, then cliques of fundamental almost normal surfaces, then cliques of normal surfaces formed by tubings of fundamental normal surfaces.
 	
@@ -746,31 +717,26 @@ def genusNTest(tri, wantedG):
 				#The only time we return False.
 				return attempt3, wantedG, "Fail"
 
-#Check from the Bth triangulation to the Ath
-#B=2975
-B=1
-A=3100
-triNum = 0
+def heegaardRunnerFunc(sig):
+	"""This simplifies a triangulation, then checks for splittings of genus g=min(2, rank of homology), then for g+1, etc.
+	
+	PARAMETERS
+	str sig: the isomorphism signature of the triangulation to determine Heegaard genus of.
 
-for rawTriangulation in hyperbolicOrientalMen.children():
-	if B < triNum < A:
-		startT = time.time()
-		tri = Triangulation3(rawTriangulation)
-		#This can be improved by only using intelligentSimplify, except if the number of tetrahedra are larger than expected.
-		tri.simplifyExhaustive(2)
-		#The rank of the fundamental group gives a lower bound. It is hard to calculate this certainly, so the rank of the first homology group (which is ALWAYS <= the rank of the fundamental group) is used instead. Just in case this is below 2, we set 2 to be the lower bound instead.
-		#(Note that this is just for use with genus >= 2 anyway).
-		minGenus = max(tri.homology().countInvariantFactors(), 2)
-		success = False
-		iter = 0
-		while not success:
-			startG = time.time()
-			(testSuccess, foundGenus, message) = genusNTest(tri, minGenus + iter)
-			success = testSuccess
-			iter += 1
-			endG = time.time()
-		endT=time.time()
-		print("Genus: " + str(foundGenus) + ". Method: " + message + ". Found in " + str(round(endT - startT, 3)) + "s, or " + str(round(endG - startG, 3)) + "s for valid genus. Triangulation: " + tri.isoSig())
-	triNum += 1
-
-
+	RETURNS
+	str: a comma separated string including sig, the method used, the run time, the isomorphism signature of the simplified triangulation, the genus, the rank of the first homology group, and whether the triangulation is of a Haken manifold.
+	"""
+	startT = time.time()
+	tri = Triangulation3(sig)
+	tri.simplifyExhaustive(2)
+	isHaken = tri.isHaken()
+	hom1 = tri.homology().countInvariantFactors()
+	minGenus = max(hom1, 2)
+	success = False
+	iter = 0
+	while not success:
+		(testSuccess, foundGenus, message) = genusNTest(tri, minGenus + iter)
+		success = testSuccess
+		iter += 1
+	endT=time.time()
+	print(sig+","+message+","+str(endT-startT)+","+tri.isoSig()+","+str(foundGenus)+","+str(hom1)+","+str(isHaken))
