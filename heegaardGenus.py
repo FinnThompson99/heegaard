@@ -75,7 +75,7 @@ def removeOctsGadget(surf, tetNum):
 		surfGadgetPart = [sT0*gadT0[i] + sT1*gadT1[i] + sT2*gadT2[i] + sT3*gadT3[i] + sO312*gadOctagonO0312[i] for i in range(35)]
 	elif sO0123!=0:
 		newTri = gadgetPermGluer(tri, tetNum, Perm4([2,0,1,3]))
-		surfGadgetPart = [sT*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + sO0123*gadOctagonO0213[i] for i in range(35)]
+		surfGadgetPart = [sT1*gadT0[i] + sT2*gadT1[i] + sT0*gadT2[i] + sT3*gadT3[i] + sO0123*gadOctagonO0213[i] for i in range(35)]
 	#No octagons at all, just use an identity permutation. This could be included in the O0213 case, but this makes no difference. In this case, note we could have quadrilaterals. The quads aren't split into cases because there can only be one type of them in a tetrahedron.
 	else:
 		newTri = gadgetPermGluer(T, tetNum, Perm4([0,1,2,3]))
